@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:scheduler="clr-namespace:Syncfusion.Maui.Scheduler;assembly=Syncfusion.Maui.Scheduler"
+             xmlns:schedulerApp="clr-namespace:SchedulerApp"
+             x:Class="SchedulerApp.MainPage">
+
+    <ScrollView>
+        <Grid RowDefinitions="400,*">
+            <scheduler:SfScheduler x:Name="Scheduler"
+                                   View="Month"
+                                   AppointmentsSource="{Binding Meetings}"
+                                   QueryAppointmentsCommand="{Binding QueryAppointmentsCommand}"
+                                   SelectedDate="{Binding SelectedDate}"
+                                   HeightRequest="380"
+                                   SelectionChanged="Scheduler_OnSelectionChanged">
+                <scheduler:SfScheduler.BindingContext>
+                    <schedulerApp:MainPageViewModel />
+                </scheduler:SfScheduler.BindingContext>
+                <scheduler:SfScheduler.MonthView>
+                    <scheduler:SchedulerMonthView AppointmentDisplayMode="Indicator" />
+                </scheduler:SfScheduler.MonthView>
+                <scheduler:SfScheduler.AppointmentMapping>
+                    <scheduler:SchedulerAppointmentMapping
+                        Subject="Subject"
+                        StartTime="From"
+                        EndTime="To"
+                        Background="Background"
+                        TextColorMapping="TextColor" />
+                </scheduler:SfScheduler.AppointmentMapping>
+            </scheduler:SfScheduler>
+
+            <CollectionView x:Name="ColView" HeightRequest="300" Grid.Row="1" SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="0,0,0,2" BackgroundColor="{Binding BackgroundColor}">
+                            <VerticalStackLayout Padding="10,5,10,5">
+                                <Label Text="{Binding Subject}" FontSize="16" TextColor="White" />
+                                <HorizontalStackLayout>
+                                    <Label Text="{Binding From, StringFormat='{}{0:HH tt}'}" TextColor="White" />
+                                    <Label Text=" - " />
+                                    <Label Text="{Binding To, StringFormat='{}{0:HH tt}'}" TextColor="White" />
+                                </HorizontalStackLayout>
+                            </VerticalStackLayout>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+    </ScrollView>
+
+</ContentPage>
